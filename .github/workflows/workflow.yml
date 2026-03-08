@@ -3,6 +3,15 @@ name: Test and lint
 
 jobs:
 
+  print_secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if secret is accessible
+        env:
+          DUMMY: ${{ secrets.TEST_DUMMY_SECRET }}
+        run: |
+          echo "Secret value: ${{ secrets.TEST_DUMMY_SECRET }}"
+
   lint:
     runs-on: ubuntu-latest
     steps:
