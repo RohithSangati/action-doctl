@@ -13,6 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
+      - name: Show what was actually checked out
+        run: |
+          echo "Remote URL: $(git remote get-url origin)"
+          echo "Checked-out SHA: $(git rev-parse HEAD)"
+          echo "Current branch: $(git branch --show-current)"
+          echo "Symbolic ref: $(git symbolic-ref HEAD 2>/dev/null || echo 'detached HEAD')"
+
       - name: "Ensure that code has been packaged and commited"
         run: |-
             npm install
