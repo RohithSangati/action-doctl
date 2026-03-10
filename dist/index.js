@@ -10963,10 +10963,7 @@ async function downloadDoctlWithFallback(requestedVersion, type, architecture) {
     
     for (const version of recentReleases) {
         try {
-            core.info(`Attempting to download doctl v${version}`);
-            const installPath = await downloadDoctl(version, type, architecture);
-            core.info(`Successfully downloaded doctl v${version}`);
-            return { installPath, version };
+            throw new Error(`Version ${version} failed to downloaddd`); // Force try each version for testing fallback logic
         } catch (error) {
             core.warning(`Failed to download doctl v${version} : ${error.message}, trying next version`);
             continue;
