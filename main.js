@@ -73,8 +73,9 @@ async function downloadDoctlWithFallback(requestedVersion, type, architecture) {
     // If a specific version was requested, try it first
     if (requestedVersion !== 'latest') {
         try {
-            core.info(`Attempting to download doctl v${requestedVersion}`);
-            return await downloadDoctl(requestedVersion, type, architecture);
+            throw new Error('Simulated download failure for testing fallback logic');
+            // core.info(`Attempting to download doctl v${requestedVersion}`);
+            // return await downloadDoctl(requestedVersion, type, architecture);
         } catch (error) {
             core.warning(`Failed to download requested version v${requestedVersion} : ${error.message}, will try recent versions`);
         }

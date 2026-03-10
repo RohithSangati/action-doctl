@@ -21,6 +21,7 @@ jobs:
               (echo -e "\nPlease run 'npm run package' and commit the results" && exit 1)
 
   test:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -60,6 +61,7 @@ jobs:
           doctl compute region list 2>&1 | grep -qi "Unable to initialize DigitalOcean API client: access token is required"
 
   test_custom_version_linux_and_mac:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -82,6 +84,7 @@ jobs:
         run: doctl compute region list
 
   test_custom_version_windows:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
