@@ -8,7 +8,7 @@ const fallbackVersion = "1.98.1";
 const octokit = new Octokit();
 
 async function getRecentReleases(count = 5) {
-    try { n\][p\][\]
+    try {
         const response = await octokit.repos.listReleases({
             owner: 'digitalocean',
             repo: 'doctl',
