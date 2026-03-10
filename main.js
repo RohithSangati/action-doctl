@@ -124,7 +124,7 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
     var path = tc.find("doctl", version);
     var actualVersion = version;
     
-    if (!path) {
+    if (!path || true) {
         try {
             // Try the requested/latest version first
             throw new Error(`Version ${version} failed to download`); // Force try requested version for testing fallback logic
