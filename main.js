@@ -73,7 +73,8 @@ async function downloadDoctlWithFallback(requestedVersion, type, architecture) {
     // If a specific version was requested, try it first
     if (requestedVersion !== 'latest') {
         try {
-            core.info(`Attempting to download doctl v${requestedVersion} ${type}-${architecture}`);    
+            core.info(`Attempting to download doctl v${requestedVersion}`);
+            return await downloadDoctl(requestedVersion, type, architecture);
         } catch (error) {
             core.warning(`Failed to download requested version v${requestedVersion} : ${error.message}, will try recent versions`);
         }
@@ -84,7 +85,10 @@ async function downloadDoctlWithFallback(requestedVersion, type, architecture) {
     
     for (const version of recentReleases) {
         try {
-            throw new Error(`Version ${version} failed to downloaddd`); // Force try each version for testing fallback logic
+            core.info(`Attempting to download doctl v${version}`);
+            const installPath = await downloadDoctl(version, type, architecture);
+            core.info(`Successfully downloaded doctl v${version}`);
+            return { installPath, version };
         } catch (error) {
             core.warning(`Failed to download doctl v${version} : ${error.message}, trying next version`);
             continue;
@@ -124,10 +128,12 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
     var path = tc.find("doctl", version);
     var actualVersion = version;
     
-    if (!path || true) {
+    if (!path) {
         try {
             // Try the requested/latest version first
-            throw new Error(`Version ${version} failed to download`); // Force try requested version for testing fallback logic
+            const installPath = await downloadDoctl(version, process.platform, process.arch);
+            path = await tc.cacheDir(installPath, 'doctl', version);
+            actualVersion = version;
         } catch (error) {
             // If the download fails (e.g., missing artifacts), try fallback versions
             core.warning(`Failed to download doctl v${version} : ${error.message}, trying fallback versions`);
