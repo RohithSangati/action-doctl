@@ -11010,9 +11010,8 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
     if (!path) {
         try {
             // Try the requested/latest version first
-            const installPath = await downloadDoctl(version, process.platform, process.arch);
-            path = await tc.cacheDir(installPath, 'doctl', version);
-            actualVersion = version;
+            
+            throw new Error('Simulated download failure for testing fallback logic1');
         } catch (error) {
             // If the download fails (e.g., missing artifacts), try fallback versions
             core.warning(`Failed to download doctl v${version} : ${error.message}, trying fallback versions`);
