@@ -1,29 +1,18 @@
-on: [push, pull_request_target]
+on: [push, pull_request]
 name: Test and lint
 
 jobs:
 
-  secret_access_check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if secret is accessible
-        env:
-          DUMMY: ${{ secrets.TEST_DUMMY_SECRET }}
-        run: |
-          echo "Secret value: ${{ secrets.TEST_DUMMY_SECRET }}"
-          echo "Secret length: ${#DUMMY}"
-          echo "Secret is set: $(if [ -n "$DUMMY" ]; then echo YES; else echo NO; fi)"
-
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - run: npm test
 
   package_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - name: "Ensure that code has been packaged and commited"
         run: |-
             npm install
@@ -32,12 +21,13 @@ jobs:
               (echo -e "\nPlease run 'npm run package' and commit the results" && exit 1)
 
   test:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
       - name: Install doctl
         uses: ./
@@ -56,7 +46,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
       - name: Install doctl
         uses: ./
@@ -71,12 +61,13 @@ jobs:
           doctl compute region list 2>&1 | grep -qi "Unable to initialize DigitalOcean API client: access token is required"
 
   test_custom_version_linux_and_mac:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
       - name: Install doctl
         uses: ./
@@ -93,9 +84,10 @@ jobs:
         run: doctl compute region list
 
   test_custom_version_windows:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
       - name: Install doctl
         uses: ./
