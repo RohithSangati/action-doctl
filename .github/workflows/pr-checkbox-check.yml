@@ -1,0 +1,21 @@
+name: PR Checkbox Validation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  check-acknowledgment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check required checkbox
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const checked = body.includes('[x] I acknowledge that tests are skipped for forked PRs');
+            if (!checked) {
+              core.setFailed(
+                'Please check the acknowledgment checkbox in the PR description confirming you will verify tests post-merge.'
+              );
+            }
