@@ -6,7 +6,7 @@ on:
 
 jobs:
   check-fork-acknowledgment:
-    if: github.event.pull_request.head.repo.fork == true
+    if: github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Check for acknowledgment label
