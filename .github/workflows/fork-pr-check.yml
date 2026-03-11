@@ -1,0 +1,28 @@
+name: Validate Fork PR Checklist
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR is from fork
+        id: fork
+        run: |
+          echo "fork=${{ github.event.pull_request.head.repo.fork }}" >> $GITHUB_OUTPUT
+
+      - name: Validate checkbox for fork PR
+        if: steps.fork.outputs.fork == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || "";
+
+            const required = "- [x] I confirm that tests were skipped for forked PRs and I will verify the pipeline triggered by the **push event after merge**.";
+
+            if (!body.includes(required)) {
+              core.setFailed("Fork PR requires confirmation that post-merge pipeline will be verified.");
+            }
