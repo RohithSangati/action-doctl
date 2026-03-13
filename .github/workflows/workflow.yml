@@ -104,7 +104,6 @@ jobs:
         run: doctl compute region list
 
   ci_success:
-    name: CI Success
     runs-on: ubuntu-latest
     needs:
       - lint
