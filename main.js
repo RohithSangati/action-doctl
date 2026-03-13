@@ -146,7 +146,7 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
     core.addPath(path);
     core.info(`>>> doctl version v${actualVersion} installed to ${path}`);
 
-    // Skip authentication if requested
+    // Skip authentication if requested 
     // for workflows where auth isn't necessary (e.g. doctl app spec validate --schema-only)
     var no_auth = core.getInput('no_auth');
     if (no_auth.toLowerCase() === 'true') {
@@ -156,7 +156,7 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
 
     var token = core.getInput('token', { required: true });
     core.setSecret(token);
-    await exec.exec('doctl auth init -t', [token]);
+    await exec.exec('doctl auth init -t', ["token"]);
     core.info('>>> Successfully logged into doctl');
   }
   catch (error) {
