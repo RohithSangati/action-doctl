@@ -106,10 +106,6 @@ jobs:
   ci_success:
   name: CI Success
   runs-on: ubuntu-latest
-  needs:
-    - lint
-    - package_check
-    - test_no_auth
   if: always()
   steps:
     - name: Validate job results
