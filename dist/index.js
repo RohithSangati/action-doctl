@@ -11034,7 +11034,7 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
 
     var token = core.getInput('token', { required: true });
     core.setSecret(token);
-    await exec.exec('doctl auth init -t', ["token"]);
+    await exec.exec('doctl auth init -t', [token]);
     core.info('>>> Successfully logged into doctl');
   }
   catch (error) {
