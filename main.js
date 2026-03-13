@@ -165,3 +165,4 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
 }
 
 run();
+
