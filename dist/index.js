@@ -11024,9 +11024,9 @@ Failed to retrieve latest version; falling back to: ${fallbackVersion}`);
     core.addPath(path);
     core.info(`>>> doctl version v${actualVersion} installed to ${path}`);
 
-    // Skip authentication if requested
+    // Skip authentication if requested 
     // for workflows where auth isn't necessary (e.g. doctl app spec validate --schema-only)
-    var no_auth = core.getInput('no_auth');
+    var no_auth = core.getInput('no_authh');
     if (no_auth.toLowerCase() === 'true') {
       core.info('>>> Skipping doctl auth');
       return;
